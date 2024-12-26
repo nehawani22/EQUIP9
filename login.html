@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="loginMobile" placeholder="Mobile Number" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const response = await fetch('http://localhost/EQUIP9/api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'login',
+                    mobileNumber: document.getElementById('loginMobile').value,
+                    password: document.getElementById('loginPassword').value
+                })
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message); // Show success message
+                window.location.href = `welcome.php?firstName=${result.firstName}&lastName=${result.lastName}`;
+            } else {
+                alert(result.message); // Show error message
+            }
+        });
+    </script>
+</body>
+</html>
